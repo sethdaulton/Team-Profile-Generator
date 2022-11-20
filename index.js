@@ -1,15 +1,21 @@
-const inquirer = require('inquirer');
-const fs = require('fs');
+const inquirer = require("inquirer");
+const fs = require("fs");
 
 function generateEmployee() {
-  // generate employee and add to 
+  // generate employee and add to
 }
 
-const generateHTML = ({ name, title, id, email, officeNumber,
-    name2, title2, id2, email2, githubUrl, github,
-    name3, title3, id3, email3, githubUrl2, github2,
-    name4, title4, id4, email4, githubUrl3, github3,
-    name5, title5, id5, email5, school }) =>
+//create a global variable for teamMembers
+const arrayofTeamMembers = []
+
+const generateHTML = ({
+  name,
+  title,
+  id,
+  email,
+  officeNumber,
+
+}) =>
   `<meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="./dist/style.css">
@@ -116,72 +122,71 @@ const generateHTML = ({ name, title, id, email, officeNumber,
 </body>
 </html>`;
 
+function displayMenu() {
+  inquirer.prompt([
+    {
+      type: "list",
+      name: "menuChoice",
+      message: "Please select an option from the menu",
+      choices: ["Add an engineer", "Add an intern", "Finish"]
+    }
+  ])
+  .then((answers) => {
+  const menuChoice = answers.menuChoice
+  console.log(menuChoice);
+switch (menuChoice) {
+  case "Add an engineer":
+    addEngineer()
+    break;
+// add cases for adding intern and finish
+  default:
+    break;
+}
+});
+}
+
+function addEngineer() {
+    // implement this function to start an inquirer that gathers input to create an engineer
+
+}
+
 inquirer
   .prompt([
     // Questions for Employee #1
     {
-      type: 'input',
-      name: 'name',
-      message: 'What is the name of the manager?',
+      type: "input",
+      name: "name",
+      message: "What is the name of the manager?",
     },
-    // {
-    //   type: 'input',
-    //   name: 'title',
-    //   message: 'What title is this employee?',
-    // },
-    // {
-    //   type: 'input',
-    //   name: 'id',
-    //   message: "What is this employee's id number?",
-    // },
-    // {
-    //   type: 'input',
-    //   name: 'email',
-    //   message: "What is this employee's email address?",
-    // },
-    // {
-    //   type: 'input',
-    //   name: 'officeNumber',
-    //   message: "What is this employee's office number?",
-    // },
-    // // Questions for Employee #2
-    // {
-    //     type: 'input',
-    //     name: 'name2',
-    //     message: "What is this name of the engineer?",
-    //   },
-    //   {
-    //     type: 'input',
-    //     name: 'title2',
-    //     message: "What is this employee's title?",
-    //   },
-    //   {
-    //     type: 'input',
-    //     name: 'id2',
-    //     message: "What is this employee's id?",
-    //   },
-    //   {
-    //     type: 'input',
-    //     name: 'email2',
-    //     message: "What is this employee's email address?",
-    //   },
-    //   {
-    //     type: 'input',
-    //     name: 'githubUrl',
-    //     message: "What is the link to the employee's github profile?",
-    //   },
-    //   {
-    //     type: 'input',
-    //     name: 'github',
-    //     message: "What is the employee's github profile name?",
-    //   },
-
+    {
+      type: "input",
+      name: "title",
+      message: "What title is this employee?",
+    },
+    {
+      type: "input",
+      name: "id",
+      message: "What is this employee's id number?",
+    },
+    {
+      type: "input",
+      name: "email",
+      message: "What is this employee's email address?",
+    },
+    {
+      type: "input",
+      name: "officeNumber",
+      message: "What is this employee's office number?",
+    },
     
   ])
   .then((answers) => {
-    const htmlPageContent = generateHTML(answers);
-    console.log(answers);
-    fs.writeFile('index.html', htmlPageContent, (err) =>
-      err ? console.log(err) : console.log('Successfully created index.html!')
-    );
+    // 1 use answers from inquirer to create a new instance of manager
+    // 2 push new manager instance into global team member array
+    displayMenu()
+    // const htmlPageContent = generateHTML(answers);
+    // console.log(answers);
+    // fs.writeFile("index.html", htmlPageContent, (err) =>
+    //   err ? console.log(err) : console.log("Successfully created index.html!")
+    // );
   });
