@@ -1,5 +1,8 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
+const Engineer = require("./lib/engineer");
+const Intern = require("./lib/Intern");
+const Manager = require("./lib/manager");
 
 function generateEmployee() {
   // generate employee and add to
@@ -8,14 +11,7 @@ function generateEmployee() {
 //create a global variable for teamMembers
 const arrayofTeamMembers = []
 
-const generateHTML = ({
-  name,
-  title,
-  id,
-  email,
-  officeNumber,
-
-}) =>
+const generateHTML = (array) =>
   `<meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="./dist/style.css">
@@ -29,98 +25,80 @@ const generateHTML = ({
  
 <div class="body">
 
-<div class="person-card">
-  <div class="title-container">
-    <h2>${name}</h2>
-    <h3> <i class="fa-solid fa-mug-hot"></i> ${title}</h3>
-    </div>
-    <div class="info">
-    <div class="info-container">
-        <p>ID: ${id}</p>
-    </div>
-    <div class="info-container">
-        <p>Email: <a href = "mailto: ${email}">${email}</a></p>
-    </div>
-    <div class="info-container">
-        <p>Office number: ${officeNumber}</p>
-    </div>
-</div>
-</div>
+${generateTemplate(array)}
 
-<div class="person-card">
-    <div class="title-container">
-      <h2>${name2}</h2>
-      <h3> <i class="fa-solid fa-glasses"></i> ${title2}</h3>
-      </div>
-      <div class="info">
-      <div class="info-container">
-          <p>ID: ${id2}</p>
-      </div>
-      <div class="info-container">
-      <p>Email: <a href = "mailto: ${email2}">${email2}</a></p>
-      </div>
-      <div class="info-container">
-          <p>GitHub: <a href="${githubUrl}">${github}</a></p>
-      </div>
-  </div>
-  </div>
 
-  <div class="person-card">
-    <div class="title-container">
-      <h2>${name3}</h2>
-      <h3> <i class="fa-solid fa-glasses"></i> ${title3}</h3>
-      </div>
-      <div class="info">
-      <div class="info-container">
-          <p>ID: ${id3}</p>
-      </div>
-      <div class="info-container">
-      <p>Email: <a href = "mailto: ${email3}">${email3}</a></p>
-      </div>
-      <div class="info-container">
-      <p>GitHub: <a href="${githubUrl2}">${github2}</a></p>
-      </div>
-  </div>
-  </div>
-
-  <div class="person-card">
-    <div class="title-container">
-      <h2>${name4}</h2>
-      <h3> <i class="fa-solid fa-glasses"></i> ${title4}</h3>
-      </div>
-      <div class="info">
-      <div class="info-container">
-          <p>ID: ${id4}</p>
-      </div>
-      <div class="info-container">
-      <p>Email: <a href = "mailto: ${email4}">${email4}</a></p>
-      </div>
-      <div class="info-container">
-      <p>GitHub: <a href="${githubUrl3}">${github3}</a></p>
-      </div>
-  </div>
-  </div>
-
-  <div class="person-card">
-    <div class="title-container">
-      <h2>${name5}</h2>
-      <h3> <i class="fa-solid fa-graduation-cap"></i> ${title5}</h3>
-      </div>
-      <div class="info">
-      <div class="info-container">
-          <p>ID: ${id5}</p>
-      </div>
-      <div class="info-container">
-      <p>Email: <a href = "mailto: ${email5}">${email5}</a></p>
-      </div>
-      <div class="info-container">
-          <p>School: ${school}</p>
-      </div>
-  </div>
-  </div>
 </div>
 </body>
 </html>`;
+
+function generateTemplate(array) {
+  let template = ''
+  for (let i = 0; i < array.length; i++) {
+    if (array[i].getRole()==='Manager'){
+      template+=`
+      <div class="person-card">
+  <div class="title-container">
+    <h2>${array[i].getName()}</h2>
+    <h3> <i class="fa-solid fa-mug-hot"></i> ${array[i].getRole()}</h3>
+    </div>
+    <div class="info">
+    <div class="info-container">
+        <p>ID: ${array[i].getId()}</p>
+    </div>
+    <div class="info-container">
+        <p>Email: <a href = "mailto: ${array[i].getEmail()}">${array[i].getEmail()}</a></p>
+    </div>
+    <div class="info-container">
+        <p>Office number: ${array[i].getOfficeNumber()}</p>
+    </div>
+</div>
+</div>`
+    }
+    else if (array[i].getRole()==='Engineer') {
+      template+=`
+      <div class="person-card">
+  <div class="title-container">
+    <h2>${array[i].getName()}</h2>
+    <h3> <i class="fa-solid fa-glasses"></i> ${array[i].getRole()}</h3>
+    </div>
+    <div class="info">
+    <div class="info-container">
+        <p>ID: ${array[i].getId()}</p>
+    </div>
+    <div class="info-container">
+        <p>Email: <a href = "mailto: ${array[i].getEmail()}">${array[i].getEmail()}</a></p>
+    </div>
+    <div class="info-container">
+        <p>Github: <a href="https://github.com/${array[i].getGithub()}">${array[i].getGithub()}</a></p>
+    </div>
+</div>
+</div>`
+    }
+
+    else if (array[i].getRole()==='Intern') {
+      template+=`
+      <div class="person-card">
+  <div class="title-container">
+    <h2>${array[i].getName()}</h2>
+    <h3> <i class="fa-solid fa-graduation-cap"></i> ${array[i].getRole()}</h3>
+    </div>
+    <div class="info">
+    <div class="info-container">
+        <p>ID: ${array[i].getId()}</p>
+    </div>
+    <div class="info-container">
+        <p>Email: <a href = "mailto: ${array[i].getEmail()}">${array[i].getEmail()}</a></p>
+    </div>
+    <div class="info-container">
+        <p>Github: ${array[i].getSchool()}</p>
+    </div>
+</div>
+</div>`
+    }
+  }
+  return template
+}
 
 function displayMenu() {
   inquirer.prompt([
@@ -138,6 +116,12 @@ switch (menuChoice) {
   case "Add an engineer":
     addEngineer()
     break;
+  case "Add an intern":
+    addIntern()
+    break;
+  case "Finish":
+    finish()
+    break;
 // add cases for adding intern and finish
   default:
     break;
@@ -145,23 +129,90 @@ switch (menuChoice) {
 });
 }
 
+function finish() {
+  console.log(arrayofTeamMembers);
+  const htmlPageContent = generateHTML(arrayofTeamMembers);
+    fs.writeFile("index.html", htmlPageContent, (err) =>
+      err ? console.log(err) : console.log("Successfully created index.html!")
+    );
+}
+
 function addEngineer() {
     // implement this function to start an inquirer that gathers input to create an engineer
+ inquirer
+    .prompt([
+      // Questions for Engineer
+      {
+        type: "input",
+        name: "name2",
+        message: "What is the name of the engineer?",
+      },
+      {
+        type: "input",
+        name: "id2",
+        message: "What is the id of this employee?",
+      },
+      {
+        type: "input",
+        name: "email2",
+        message: "What is the email address of this employee?",
+      },
+      {
+        type: "input",
+        name: "github",
+        message: "What is the github username of this employee?",
+      },
+    ])
+    .then (answers => {
+      console.log(answers)
+      const newEng = new Engineer(answers.name2, answers.id2, answers.email2, answers.github)
+      console.log(newEng)
+      arrayofTeamMembers.push(newEng)
+      displayMenu()
+    })
+}
 
+function addIntern() {
+  // implement this function to start an inquirer that gathers input to create an intern
+inquirer
+  .prompt([
+    // Questions for Intern
+    {
+      type: "input",
+      name: "name3",
+      message: "What is the name of the intern?",
+    },
+    {
+      type: "input",
+      name: "id3",
+      message: "What is the id of this employee?",
+    },
+    {
+      type: "input",
+      name: "email3",
+      message: "What is the email address of this employee?",
+    },
+    {
+      type: "input",
+      name: "school",
+      message: "Where does this employee attend school?",
+    },
+  ])
+  .then (answers => {
+    console.log(answers)
+    const newInt = new Intern(answers.name3, answers.id3, answers.email3, answers.school)
+    arrayofTeamMembers.push(newInt)
+    displayMenu()
+  })
 }
 
 inquirer
   .prompt([
-    // Questions for Employee #1
+    // Questions for Manager
     {
       type: "input",
       name: "name",
       message: "What is the name of the manager?",
-    },
-    {
-      type: "input",
-      name: "title",
-      message: "What title is this employee?",
     },
     {
       type: "input",
@@ -181,6 +232,8 @@ inquirer
     
   ])
   .then((answers) => {
+    const newMan = new Manager(answers.name, answers.id, answers.email, answers.officeNumber)
+    arrayofTeamMembers.push(newMan)
     // 1 use answers from inquirer to create a new instance of manager
     // 2 push new manager instance into global team member array
     displayMenu()
