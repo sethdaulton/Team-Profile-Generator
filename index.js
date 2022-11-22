@@ -122,7 +122,6 @@ switch (menuChoice) {
   case "Finish":
     finish()
     break;
-// add cases for adding intern and finish
   default:
     break;
 }
@@ -138,7 +137,6 @@ function finish() {
 }
 
 function addEngineer() {
-    // implement this function to start an inquirer that gathers input to create an engineer
  inquirer
     .prompt([
       // Questions for Engineer
@@ -237,9 +235,4 @@ inquirer
     // 1 use answers from inquirer to create a new instance of manager
     // 2 push new manager instance into global team member array
     displayMenu()
-    // const htmlPageContent = generateHTML(answers);
-    // console.log(answers);
-    // fs.writeFile("index.html", htmlPageContent, (err) =>
-    //   err ? console.log(err) : console.log("Successfully created index.html!")
-    // );
   });
