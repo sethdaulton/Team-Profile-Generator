@@ -5,12 +5,11 @@ const Intern = require("./lib/Intern");
 const Manager = require("./lib/manager");
 
 function generateEmployee() {
-  // generate employee and add to
 }
 
-//create a global variable for teamMembers
 const arrayofTeamMembers = []
 
+// The const below generates the array of employees
 const generateHTML = (array) =>
   `<meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -27,11 +26,11 @@ const generateHTML = (array) =>
 
 ${generateTemplate(array)}
 
-
 </div>
 </body>
 </html>`;
 
+// The function below is generating the template for the html page.
 function generateTemplate(array) {
   let template = ''
   for (let i = 0; i < array.length; i++) {
@@ -100,6 +99,7 @@ function generateTemplate(array) {
   return template
 }
 
+// The function below generates a menu in the command line and asks if you want to add an engineer, an intern, or finish generating the team
 function displayMenu() {
   inquirer.prompt([
     {
@@ -127,7 +127,7 @@ switch (menuChoice) {
 }
 });
 }
-
+// The function below creates the index.html file
 function finish() {
   console.log(arrayofTeamMembers);
   const htmlPageContent = generateHTML(arrayofTeamMembers);
@@ -161,6 +161,7 @@ function addEngineer() {
         message: "What is the github username of this employee?",
       },
     ])
+    // Code to generate new engineer once questions are answered. 
     .then (answers => {
       console.log(answers)
       const newEng = new Engineer(answers.name2, answers.id2, answers.email2, answers.github)
@@ -196,6 +197,7 @@ inquirer
       message: "Where does this employee attend school?",
     },
   ])
+  // Code to generate intern once questions are answered.
   .then (answers => {
     console.log(answers)
     const newInt = new Intern(answers.name3, answers.id3, answers.email3, answers.school)
@@ -229,10 +231,9 @@ inquirer
     },
     
   ])
+  // Code to generate manager after answering questions. 
   .then((answers) => {
     const newMan = new Manager(answers.name, answers.id, answers.email, answers.officeNumber)
     arrayofTeamMembers.push(newMan)
-    // 1 use answers from inquirer to create a new instance of manager
-    // 2 push new manager instance into global team member array
     displayMenu()
   });
